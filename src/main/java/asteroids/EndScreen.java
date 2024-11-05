@@ -21,7 +21,7 @@ public class EndScreen{
     private TitleScreen titleScreen;
 
     public EndScreen(Pane gamePane, int score, TitleScreen titleScreen) {
-        this.gamePane = gamePane;
+        EndScreen.gamePane = gamePane;
         this.titleScreen = titleScreen;
 
         //Overlay
@@ -57,7 +57,7 @@ public class EndScreen{
         gameOptions.getChildren().addAll(gameOver, totalScore, restart, exit);
 
         stack.getChildren().add(gameOptions);
-        this.gamePane.getChildren().add(stack);
+        EndScreen.gamePane.getChildren().add(stack);
 
     }
 }
