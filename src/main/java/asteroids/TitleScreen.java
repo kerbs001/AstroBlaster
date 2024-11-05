@@ -15,6 +15,8 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.media.AudioClip;
 
+import java.util.Objects;
+
 public class TitleScreen extends Application {
 
     public static int WIDTH = 900;
@@ -33,8 +35,8 @@ public class TitleScreen extends Application {
 
         // LOAD PREREQUISITES
         Font bodyFont = Font.loadFont(getClass().getResourceAsStream("/fonts/BubbleBoddyNeue-Light Trial.ttf"), 15);
-        String videoPath = getClass().getResource("/videos/Title.mp4").toExternalForm();
-        AudioClip titleBGM = new AudioClip(AsteroidsApplication.class.getResource("/sfx/TitleBGMusic.mp3").toExternalForm());
+        String videoPath = Objects.requireNonNull(getClass().getResource("/videos/Title.mp4")).toExternalForm();
+        AudioClip titleBGM = new AudioClip(Objects.requireNonNull(AsteroidsApplication.class.getResource("/sfx/TitleBGMusic.mp3")).toExternalForm());
 
         // Title BGM
         titleBGM.play();

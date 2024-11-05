@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.media.AudioClip;
 
+import java.util.Objects;
+
 
 public class Projectile extends Character {
 
@@ -25,10 +27,10 @@ public class Projectile extends Character {
     }
 
     private Polygon getShape() {
-        return (Polygon) super.getCharacter();
+        return super.getCharacter();
     }
     private void loadSound() {
-        this.shootSound = new AudioClip(getClass().getResource("/sfx/SFXshoot.mp3").toExternalForm());
+        this.shootSound = new AudioClip(Objects.requireNonNull(getClass().getResource("/sfx/SFXshoot.mp3")).toExternalForm());
         this.shootSound.setVolume(0.5);
     }
 }

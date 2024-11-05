@@ -6,6 +6,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 public class Explosion {
 
     private ImageView explosionImageView;
@@ -16,7 +18,7 @@ public class Explosion {
         this.gamePane = gamePane;
 
         // Load the explosion image
-        Image explosionImage = new Image(getClass().getResourceAsStream("/assets/VFXexplosion.png")); // Replace with your explosion image path
+        Image explosionImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/VFXexplosion.png"))); // Replace with your explosion image path
         explosionImageView = new ImageView(explosionImage);
         explosionImageView.setX(x - 20);
         explosionImageView.setY(y - 20);
