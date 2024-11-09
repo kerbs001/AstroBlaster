@@ -75,7 +75,7 @@ public class GameScreen {
 
         // Dynamic changing of points and magazine count
         AtomicInteger points = new AtomicInteger();
-        AtomicInteger magazineCount = new AtomicInteger();
+
 
         // Only one random instance outside
         Random random = new Random();
@@ -271,7 +271,7 @@ public class GameScreen {
             projectile.setMovement(projectile.getMovement().normalize().multiply(5));
 
             pane.getChildren().add(projectile.getCharacter());
-            if (Integer.valueOf(String.valueOf(magazineCount)) > 0) {
+            if (Integer.parseInt(String.valueOf(magazineCount)) > 0) {
                 magazineCountText.setText("Magazine: " + magazineCount.addAndGet(-1));
             }
 
