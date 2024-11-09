@@ -17,7 +17,7 @@ import javafx.scene.media.AudioClip;
 
 import java.util.Objects;
 
-public class TitleScreen extends Application {
+public class Main extends Application {
 
     public static int WIDTH = 900;
     public static int HEIGHT = 600;

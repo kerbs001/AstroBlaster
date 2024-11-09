@@ -35,6 +35,9 @@ public abstract class Character {
         this.character.setRotate(this.character.getRotate() + 5);
     }
 
+    /**
+     * Move.
+     */
     public void move() {
 
         // incrementally changes both x and y position of polygon using the Point2D reference
@@ -46,16 +49,16 @@ public abstract class Character {
         // Allows for seamlessly allowing the character to jump from one end of the border to the other
 
         if (this.character.getTranslateX() < 0) {
-            this.character.setTranslateX(this.character.getTranslateX() + TitleScreen.WIDTH);
+            this.character.setTranslateX(this.character.getTranslateX() + Main.WIDTH);
         }
-        if (this.character.getTranslateX() > TitleScreen.WIDTH) {
-            this.character.setTranslateX(this.character.getTranslateX() - TitleScreen.WIDTH); // Try minus if there is a difference over modulo
+        if (this.character.getTranslateX() > Main.WIDTH) {
+            this.character.setTranslateX(this.character.getTranslateX() - Main.WIDTH); // Try minus if there is a difference over modulo
         }
         if (this.character.getTranslateY() < 0) {
-            this.character.setTranslateY(this.character.getTranslateY() + TitleScreen.HEIGHT);
+            this.character.setTranslateY(this.character.getTranslateY() + Main.HEIGHT);
         }
-        if (this.character.getTranslateY() > TitleScreen.HEIGHT) {
-            this.character.setTranslateY(this.character.getTranslateY() - TitleScreen.HEIGHT);
+        if (this.character.getTranslateY() > Main.HEIGHT) {
+            this.character.setTranslateY(this.character.getTranslateY() - Main.HEIGHT);
         }
 
     }
@@ -73,12 +76,17 @@ public abstract class Character {
         this.movement = this.movement.add(changeX, changeY);
     }
 
+    /**
+     this utilizes the intersect method of Shape wherein it checks the polygon of two characters, say for here is
+     ship and asteroid. Using getBoundsInLocal().getWidth(),
+     this checks collision that if it returns -1, it still hasn't collided
+     if it does not, it will return anything other than -1
+
+     @param other other characters that are in collision with the shape
+     */
     public boolean collide(Character other) {
 
-        // this utilizes the intersect method of Shape wherein it checks the polygon of two characters, say for here is
-        // ship and asteroid. Using getBoundsInLocal().getWidth(),
-        // this checks collision that if it returns -1, it still hasnt collided
-        // if it does not, it will return anything other than -1
+
 
         Shape collisionArea = Shape.intersect(this.character, other.getCharacter());
         return collisionArea.getBoundsInLocal().getWidth() != -1;
@@ -88,6 +96,9 @@ public abstract class Character {
         return this.movement;
     }
 
+    /**
+     * @param movement
+     */
     public void setMovement(Point2D movement) {
         this.movement = movement;
     }

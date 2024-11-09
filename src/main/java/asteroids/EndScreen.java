@@ -5,31 +5,28 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class EndScreen{
 
     private static Pane gamePane;
-    private TitleScreen titleScreen;
+    private Main titleScreen;
 
-    public EndScreen(Pane gamePane, int score, TitleScreen titleScreen) {
+    public EndScreen(Pane gamePane, int score, Main main) {
         EndScreen.gamePane = gamePane;
-        this.titleScreen = titleScreen;
+        this.titleScreen = main;
 
         //Overlay
-        Rectangle rectangle = new Rectangle(TitleScreen.WIDTH, TitleScreen.HEIGHT);
+        Rectangle rectangle = new Rectangle(Main.WIDTH, Main.HEIGHT);
         StackPane stack = new StackPane(); // main layout
-        stack.setOpacity(1);
+        rectangle.setOpacity(0.5);
         stack.getChildren().add(rectangle);
-        stack.setPrefSize(TitleScreen.WIDTH, TitleScreen.HEIGHT);
+        stack.setPrefSize(Main.WIDTH, Main.HEIGHT);
 
         // game options after end screen
         VBox gameOptions = new VBox();
@@ -46,7 +43,7 @@ public class EndScreen{
         Button restart = new Button("Play again!");
         Button exit = new Button("Exit");
 
-        restart.setOnAction(event -> titleScreen.restartGame());
+        restart.setOnAction(event -> main.restartGame());
 
         exit.setOnAction(event -> Platform.exit());
 

@@ -18,30 +18,32 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.media.AudioClip;
 
 
+/**
+ * The type Asteroids application.
+ */
 public class AsteroidsApplication {
 
     private static final long PROJECTILE_LIFETIME = 2000; // in milliseconds
     private static boolean canShoot = true;
-    private static double oddIncrement = 0;
+    private static double addIncrement = 0;
     private static int score = 0;
     private static final List<Projectile> projectiles = new ArrayList<>();
     private static final List<Asteroid> asteroids = new ArrayList<>();
     private static Ship ship;
+    private static Main main;
 
-    private static TitleScreen titleScreen;
 
+    /**
+     * Create the game scene. .
+     *
+     * @param main the main
+     * @return the scene
+     */
+    public static Scene createGameScene(Main main) {
+        AsteroidsApplication.main = main;
 
-    public static Scene createGameScene(TitleScreen titleScreen) {
-        AsteroidsApplication.titleScreen = titleScreen;
-
-        // Reset game objects
-        projectiles.clear();
-        asteroids.clear();
-        score = 0;
-
-        // Reinitialize ship and other variables if needed
-        ship = new Ship(TitleScreen.WIDTH / 2, TitleScreen.HEIGHT / 2);
-
+        resetParameters();
+        ship = new Ship(Main.WIDTH / 2, Main.HEIGHT / 2);
 
         // **Import from resources folder
         Font ScoreFont = Font.loadFont(AsteroidsApplication.class.getResourceAsStream("/fonts/Death Star.otf"), 25);
@@ -52,12 +54,12 @@ public class AsteroidsApplication {
 
         // **Setup main scene
         Pane pane = new Pane();
-        pane.setPrefSize(TitleScreen.WIDTH, TitleScreen.HEIGHT);
+        pane.setPrefSize(Main.WIDTH, Main.HEIGHT);
 
         // Main Scene BG
         ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(TitleScreen.WIDTH); // Set to your desired width
-        backgroundImageView.setFitHeight(TitleScreen.HEIGHT); // Set to your desired height
+        backgroundImageView.setFitWidth(Main.WIDTH); // Set to your desired width
+        backgroundImageView.setFitHeight(Main.HEIGHT); // Set to your desired height
         backgroundImageView.setPreserveRatio(true);
         pane.getChildren().add(backgroundImageView);
 
@@ -77,6 +79,9 @@ public class AsteroidsApplication {
 
         // Spawn the ship
         pane.getChildren().add(ship.getCharacterGroup());
+
+
+
 
         // Show Main scene
         Scene scene = new Scene(pane);
@@ -106,19 +111,23 @@ public class AsteroidsApplication {
         // **Placed here so it is on top of all sprites
         pane.getChildren().add(scoreboard);
 
+
         Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
 
         scene.setOnKeyPressed(event -> {
             pressedKeys.put(event.getCode(), Boolean.TRUE);
-            if (event.getCode() == KeyCode.UP && boost.getVolume() == 0) { // Check if volume is already 0
+            if (event.getCode() == KeyCode.UP && boost.getVolume() == 0) { // Check if volume is already
+                pane.getChildren().add(ship.getBooster());
                 boost.setVolume(0.5);
                 boost.play();
+
             }
         });
 
         scene.setOnKeyReleased(event -> {
             pressedKeys.put(event.getCode(), Boolean.FALSE);
             if (event.getCode() == KeyCode.UP && boost.getVolume() > 0) { // Check if volume is already > 0
+                pane.getChildren().remove(ship.getBooster());
                 boost.setVolume(0);
                 boost.stop();
             }
@@ -145,8 +154,9 @@ public class AsteroidsApplication {
                         new Explosion(pane, ship.getCharacter().getTranslateX(), ship.getCharacter().getTranslateY());
                         explode.play();
                         bgMusic.stop();
+                        pane.getChildren().remove(scoreboard);
                         stop();
-                        new EndScreen(pane, getScore(), AsteroidsApplication.titleScreen);
+                        new EndScreen(pane, getScore(), AsteroidsApplication.main);
                     }
                 });
 
@@ -156,8 +166,7 @@ public class AsteroidsApplication {
                 // removes all characters where isAive status is false;
                 removeDeadEntities(pane);
 
-                // ** ADDING DIFFICULTY FEATURE
-                // adding 0.5% chance of spawning new asteroid. runs by 60 frames per second so chance is reasonable.
+
                 addDifficulty(pane);
 
             }
@@ -166,21 +175,51 @@ public class AsteroidsApplication {
         return scene;
 
     }
+
+    /**
+     * Gets score.
+     *
+     * @return the score
+     */
     public static int getScore() {
         return score;
     }
+
+    /**
+     * Resets score.
+     */
     public static void resetScore() {
         score = 0;
     }
 
+    /**
+     * Reset list of asteroids and projectiles, game score, and ship location.
+     */
+    public static void resetParameters () {
+        projectiles.clear();
+        asteroids.clear();
+        score = 0;
+    }
+
+    /**
+     * Generate asteroids and add it to the list for monitoring. Asteroids list check isAlive() status to check
+     * whether asteroids should still be in game pane or not.
+     * @param pane game pane
+     * @param random random object for asteroid generation
+     */
     private static void spawnAsteroids(Pane pane, Random random) {
         for (int i = 0; i < 5; i++) {
-            Asteroid asteroid = new Asteroid(random.nextInt(TitleScreen.WIDTH / 3), random.nextInt(TitleScreen.HEIGHT / 2));
+            Asteroid asteroid = new Asteroid(random.nextInt(Main.WIDTH / 3), random.nextInt(Main.HEIGHT / 2));
             asteroids.add(asteroid);
             pane.getChildren().add(asteroid.getCharacter());
         }
     }
 
+    /**
+     * Evaluates input values for ship acceleration, turning, and shooting.
+     * @param pane game pane
+     * @param pressedKeys HashMap containing input values with Boolean values showing it being pressed currently or not
+     */
     private static void shipMovement(Pane pane , Map<KeyCode, Boolean> pressedKeys) {
         if (pressedKeys.getOrDefault(KeyCode.LEFT, false)) {
             ship.turnLeft();
@@ -207,7 +246,8 @@ public class AsteroidsApplication {
             projectiles.add(projectile);
 
             projectile.accelerate();
-            projectile.setMovement(projectile.getMovement().normalize().multiply(2));
+            // speed multiplier for projectile
+            projectile.setMovement(projectile.getMovement().normalize().multiply(5));
 
             pane.getChildren().add(projectile.getCharacter());
 
@@ -220,6 +260,16 @@ public class AsteroidsApplication {
         }
     }
 
+    /**
+     * Check projectile and asteroid collision. Initiates also explosion FX and scoring when collision occurs.
+     * isAlive status for the affected models are set to false which will be processed by removeDeadEntities() method
+     * for model removal in game pane
+     *
+     * @param pane game pane
+     * @param text text displaying the score of the player
+     * @param explode audio clip of explosion initialized in the createGameScene()
+     * @param points Used AtomicInteger class for dynamic updating of scores
+     */
     private static void projectileCheck(Pane pane, Text text, AudioClip explode, AtomicInteger points) {
         projectiles.forEach(projectile -> {
             asteroids.forEach(asteroid -> {
@@ -237,7 +287,7 @@ public class AsteroidsApplication {
                     text.setText("Points: " + points.addAndGet(1000));
                     score += 1000;
                     // increase speed of asteroids
-                    oddIncrement += 0.005;
+                    addIncrement += 0.005;
                 }
                 if((System.currentTimeMillis() - projectile.getStartTime() > PROJECTILE_LIFETIME)) {
                     projectile.setAlive(false);
@@ -248,6 +298,11 @@ public class AsteroidsApplication {
         });
     }
 
+    /**
+     * Checks projectiles and asteroids list for each isAlive() status. if status is set to False, projectile/asteroid
+     * is removed from the game pane.
+     * @pane game pane
+     */
     private static void removeDeadEntities(Pane pane) {
         projectiles.removeIf(projectile -> {
             if (!projectile.isAlive()) {
@@ -267,11 +322,17 @@ public class AsteroidsApplication {
 
     }
 
+    /**
+     * DIFFICULTY FEATURE:
+     * Increase the chance a new asteroid is generated by increasing chance from initial 0.5%. Increments dictated by
+     * addIncrement variable. Limits also asteroid generation by evaluating collision on starting position and
+     * existing asteroids in pane.
+     */
     private static void addDifficulty(Pane pane) {
 
         // increasing chance of spawning a new asteroid for every point scored
-        if(Math.random() < 0.005 + oddIncrement) {
-            Asteroid asteroid = new Asteroid(TitleScreen.WIDTH, TitleScreen.HEIGHT);
+        if(Math.random() < 0.005 + addIncrement) {
+            Asteroid asteroid = new Asteroid(Main.WIDTH, Main.HEIGHT);
 
             if (!asteroid.collide(ship) && asteroids.size() < 15) {     // limit asteroids in pane to be 30 for optimization purposes
                 asteroids.add(asteroid);
