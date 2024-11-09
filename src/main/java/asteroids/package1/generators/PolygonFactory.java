@@ -1,4 +1,4 @@
-package asteroids;
+package asteroids.package1.generators;
 
 import java.util.Objects;
 import java.util.Random;

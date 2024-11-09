@@ -1,5 +1,10 @@
-package asteroids;
+package asteroids.package1.screens;
 
+import asteroids.Main;
+import asteroids.package1.models.Asteroid;
+import asteroids.package1.models.Explosion;
+import asteroids.package1.models.Projectile;
+import asteroids.package1.models.Ship;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,7 +26,7 @@ import javafx.scene.media.AudioClip;
 /**
  * The type Asteroids application.
  */
-public class AsteroidsApplication {
+public class GameScreen {
 
     private static final long PROJECTILE_LIFETIME = 2000; // in milliseconds
     private static boolean canShoot = true;
@@ -40,17 +45,17 @@ public class AsteroidsApplication {
      * @return the scene
      */
     public static Scene createGameScene(Main main) {
-        AsteroidsApplication.main = main;
+        GameScreen.main = main;
 
         resetParameters();
         ship = new Ship(Main.WIDTH / 2, Main.HEIGHT / 2);
 
         // **Import from resources folder
-        Font ScoreFont = Font.loadFont(AsteroidsApplication.class.getResourceAsStream("/fonts/Death Star.otf"), 25);
-        Image backgroundImage = new Image(Objects.requireNonNull(AsteroidsApplication.class.getResourceAsStream("/assets/background.jpg")));
-        AudioClip bgMusic = new AudioClip(Objects.requireNonNull(AsteroidsApplication.class.getResource("/sfx/BGMusic.mp3")).toExternalForm());
-        AudioClip explode = new AudioClip(Objects.requireNonNull(AsteroidsApplication.class.getResource("/sfx/explosion.wav")).toExternalForm());
-        AudioClip boost = new AudioClip(Objects.requireNonNull(AsteroidsApplication.class.getResource("/sfx/boost.mp3")).toExternalForm());
+        Font ScoreFont = Font.loadFont(GameScreen.class.getResourceAsStream("/fonts/Death Star.otf"), 25);
+        Image backgroundImage = new Image(Objects.requireNonNull(GameScreen.class.getResourceAsStream("/assets/background.jpg")));
+        AudioClip bgMusic = new AudioClip(Objects.requireNonNull(GameScreen.class.getResource("/sfx/BGMusic.mp3")).toExternalForm());
+        AudioClip explode = new AudioClip(Objects.requireNonNull(GameScreen.class.getResource("/sfx/explosion.wav")).toExternalForm());
+        AudioClip boost = new AudioClip(Objects.requireNonNull(GameScreen.class.getResource("/sfx/boost.mp3")).toExternalForm());
 
         // **Setup main scene
         Pane pane = new Pane();
@@ -156,7 +161,7 @@ public class AsteroidsApplication {
                         bgMusic.stop();
                         pane.getChildren().remove(scoreboard);
                         stop();
-                        new EndScreen(pane, getScore(), AsteroidsApplication.main);
+                        new EndScreen(pane, getScore(), GameScreen.main);
                     }
                 });
 

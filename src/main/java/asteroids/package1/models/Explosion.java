@@ -1,4 +1,4 @@
-package asteroids;
+package asteroids.package1.models;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;

@@ -1,4 +1,6 @@
-package asteroids;
+package asteroids.package1.models;
+
+import asteroids.package1.generators.PolygonFactory;
 
 import java.util.Random;
 
