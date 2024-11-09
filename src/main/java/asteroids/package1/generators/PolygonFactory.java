@@ -1,4 +1,4 @@
-package asteroids;
+package asteroids.package1.generators;
 
 import java.util.Objects;
 import java.util.Random;
@@ -9,44 +9,61 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
 
+/**
+ * The type Polygon factory.
+ */
 public class PolygonFactory {
 
+    /**
+     * Create a new polygon that is used for generating the shape of the asteroid. It randomizes the number of
+     * sides of an asteroid. Initially it generates a regular polygon, randomization is implemented on the vertices
+     * to make it look more natural
+     *
+     * @return the polygon
+     */
     public Polygon createPolygon() {
         Random random = new Random();
         int numSides = 8 + random.nextInt(10); // Random number of sides between 8 and 12 for variation
         double size = 10 + random.nextInt(20);
         Polygon polygon = new Polygon();
 
-        // Generate the points for each vertex of the polygon
+
         for (int i = 0; i < numSides; i++) {
 
-            // get the angle for each vertex of a polygon with n number of sides
-            // calculated by 2  * PI * n / numSides where 2 * PI is the total angle in radians of a full circle
+            /*
+             get the angle for each vertex of a polygon with n number of sides
+             calculated by 2  * PI * (n / numSides) where 2 * PI is the total angle in radians of a full circle
+            */
 
             double angle = 2 * Math.PI * i / numSides; // Calculate angle for each vertex
 
-            // To get x and y values, use:
+            /*
+             **NOTE: TETHA IS ALWAYS IN RADIANS
+             To get x and y values, use:
+            */
 
-            // ** NOTE: TETHA IS ALWAYS IN RADIANS
-
-            // COS(tetha) = adjacent / hypotenuse -> hypotenuse * SIN(tetha) = adjacent
-            // where: adjacent = x val
+            /*
+             COS(tetha) = adjacent / hypotenuse -> hypotenuse * SIN(tetha) = adjacent
+             where: adjacent = x val
+             */
             double x = size * Math.cos(angle);
 
-            // SIN(tetha) = opposite / hypotenuse -> hypotenuse * SIN(tetha) = opposite
-            // where: opposite = y val
+            /*
+             SIN(tetha) = opposite / hypotenuse -> hypotenuse * SIN(tetha) = opposite
+             where: opposite = y val
+            */
             double y = size * Math.sin(angle);
 
 
             polygon.getPoints().addAll(x, y);
         }
 
-        // POINT RANDOMIZATION
-        // to add variety instead of just creating REGULAR polygons
+        // **POINT RANDOMIZATION
+        // Made to add variety instead of just creating REGULAR polygons
         for (int i = 0; i < polygon.getPoints().size(); i++) {
 
-            // randomizer whether to add or subtract to the existing x, y values. this are updated as one when called
-            // with.set() method..
+            // randomizer whether to add or subtract to the existing x, y values. this is updated as one when called
+            // with .set() method..
             int change = random.nextInt(5) - 2;
             polygon.getPoints().set(i, polygon.getPoints().get(i) + change);
         }

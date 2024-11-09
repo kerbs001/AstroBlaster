@@ -1,11 +1,22 @@
-package asteroids;
+package asteroids.package1.models;
+
+import asteroids.package1.generators.PolygonFactory;
 
 import java.util.Random;
 
+/**
+ * The type Asteroid.
+ */
 public class Asteroid extends Character {
 
     private final double rotationalMovement;
 
+    /**
+     * Instantiates a new Asteroid.
+     *
+     * @param x the x - coordinate asteroid is initially generated
+     * @param y the y - coordinate asteroid is initially generated
+     */
     public Asteroid(int x, int y) {
         super(new PolygonFactory().createPolygon(), x, y);
 
@@ -29,6 +40,9 @@ public class Asteroid extends Character {
 
     }
 
+    /**
+     * Inherits the move method in Character class and then randomizes the .setRotate() method for asteroid generation
+     */
     @Override
     public void move() {
         super.move();

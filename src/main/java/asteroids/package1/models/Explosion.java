@@ -1,4 +1,4 @@
-package asteroids;
+package asteroids.package1.models;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
@@ -8,12 +8,22 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
+/**
+ * The type Explosion.
+ */
 public class Explosion {
 
     private ImageView explosionImageView;
     private Pane gamePane;
     private static final double EXPLOSION_DURATION = 1.0; // in seconds
 
+    /**
+     * Instantiates a new Explosion. Called when two objects intersect.
+     *
+     * @param gamePane the game pane
+     * @param x        the x - coordinate as to where explosion occurs
+     * @param y        the y - coordinate as to where explosion occurs
+     */
     public Explosion(Pane gamePane, double x, double y) {
         this.gamePane = gamePane;
 
@@ -32,6 +42,9 @@ public class Explosion {
         playExplosionAnimation();
     }
 
+    /**
+     * Plays an explosion animation wherein the explosion fades from 1.0 to 0.0 wherein it is removed from the pane after.
+     */
     private void playExplosionAnimation() {
         // Fade out transition
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(EXPLOSION_DURATION), explosionImageView);

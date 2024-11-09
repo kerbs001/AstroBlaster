@@ -1,5 +1,6 @@
-package asteroids;
+package asteroids.package1.screens;
 
+import asteroids.Main;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,10 +32,10 @@ public class EndScreen{
         // game options after end screen
         VBox gameOptions = new VBox();
 
-        Font textFont = Font.loadFont(AsteroidsApplication.class.getResourceAsStream("/fonts/Death Star.otf"), 25);
+        Font textFont = Font.loadFont(GameScreen.class.getResourceAsStream("/fonts/Death Star.otf"), 25);
 
         Label gameOver = new Label("Game over!");
-        Label totalScore = new Label(String.valueOf(AsteroidsApplication.getScore()));
+        Label totalScore = new Label(String.valueOf(GameScreen.getScore()));
         gameOver.setFont(textFont);
         totalScore.setFont(textFont);
         gameOver.setTextFill(Color.WHITE);

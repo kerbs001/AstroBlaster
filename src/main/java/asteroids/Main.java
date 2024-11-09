@@ -1,5 +1,6 @@
 package asteroids;
 
+import asteroids.package1.screens.GameScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -17,9 +18,18 @@ import javafx.scene.media.AudioClip;
 
 import java.util.Objects;
 
+/**
+ * The type Main.
+ */
 public class Main extends Application {
 
+    /**
+     * The constant WIDTH.
+     */
     public static int WIDTH = 900;
+    /**
+     * The constant HEIGHT.
+     */
     public static int HEIGHT = 600;
     private Stage primaryStage;
 
@@ -30,13 +40,16 @@ public class Main extends Application {
         showTitleScreen();
     }
 
+    /**
+     * Show title screen of the game.
+     */
     public void showTitleScreen() {
         BorderPane borderPane = new BorderPane(); // higher level layout
 
         // LOAD PREREQUISITES
         Font bodyFont = Font.loadFont(getClass().getResourceAsStream("/fonts/BubbleBoddyNeue-Light Trial.ttf"), 15);
         String videoPath = Objects.requireNonNull(getClass().getResource("/videos/Title.mp4")).toExternalForm();
-        AudioClip titleBGM = new AudioClip(Objects.requireNonNull(AsteroidsApplication.class.getResource("/sfx/TitleBGMusic.mp3")).toExternalForm());
+        AudioClip titleBGM = new AudioClip(Objects.requireNonNull(GameScreen.class.getResource("/sfx/TitleBGMusic.mp3")).toExternalForm());
 
         // Title BGM
         titleBGM.play();
@@ -81,14 +94,22 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Restart game.
+     */
     public void restartGame() {
-        AsteroidsApplication.resetScore();
-        Scene gameScene = AsteroidsApplication.createGameScene(this);
+        GameScreen.resetScore();
+        Scene gameScene = GameScreen.createGameScene(this);
 
         // Set the scene to the primary stage
         primaryStage.setScene(gameScene);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
